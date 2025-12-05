@@ -1,0 +1,23 @@
+{
+  "name": "Data Extraction Agent",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "configureZshAsDefaultShell": true,
+      "installOhMyZsh": true,
+      "upgradePackages": true
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-toolsai.jupyter",
+        "eamodio.gitlens"
+      ]
+    }
+  },
+  "postCreateCommand": "pip3 install --upgrade pip && pip3 install 'deepagents @ git+https://github.com/langchain-ai/deepagents.git' langchain langgraph anthropic tavily-python ipython jupyter"
+}
