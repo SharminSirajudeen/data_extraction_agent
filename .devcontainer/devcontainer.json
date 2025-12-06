@@ -1,23 +1,85 @@
 {
   "name": "Data Extraction Agent",
   "image": "mcr.microsoft.com/devcontainers/python:3.11",
+
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
       "installZsh": true,
       "configureZshAsDefaultShell": true,
       "installOhMyZsh": true,
       "upgradePackages": true
-    }
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
   },
+
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "4gb",
+    "storage": "16gb"
+  },
+
   "customizations": {
     "vscode": {
       "extensions": [
         "ms-python.python",
         "ms-python.vscode-pylance",
         "ms-toolsai.jupyter",
-        "eamodio.gitlens"
+        "eamodio.gitlens",
+        "ms-azuretools.vscode-docker",
+        "redhat.vscode-yaml",
+        "esbenp.prettier-vscode"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.formatting.provider": "black",
+        "editor.formatOnSave": true,
+        "python.linting.enabled": true,
+        "python.linting.ruffEnabled": true
+      }
+    },
+    "codespaces": {
+      "openFiles": [
+        "README.md",
+        "data_extraction_agent.ipynb"
       ]
     }
   },
-  "postCreateCommand": "pip3 install --upgrade pip && pip3 install 'deepagents @ git+https://github.com/langchain-ai/deepagents.git' langchain langgraph anthropic tavily-python ipython jupyter"
+
+  "postCreateCommand": "pip install --upgrade pip && pip install -e '.[dev]' && cp -n .env.example .env 2>/dev/null || true",
+
+  "postStartCommand": "echo '✅ Data Extraction Agent ready! Run: jupyter notebook data_extraction_agent.ipynb'",
+
+  "forwardPorts": [8000, 8080, 8888],
+
+  "portsAttributes": {
+    "8000": {
+      "label": "LangGraph Server",
+      "onAutoForward": "notify"
+    },
+    "8888": {
+      "label": "Jupyter Notebook",
+      "onAutoForward": "openBrowser"
+    }
+  },
+
+  "remoteEnv": {
+    "PYTHONPATH": "${containerWorkspaceFolder}",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+
+  "secrets": {
+    "GROQ_API_KEY": {
+      "description": "Groq API key (free at console.groq.com)"
+    },
+    "ANTHROPIC_API_KEY": {
+      "description": "Anthropic API key (optional)"
+    },
+    "GOOGLE_API_KEY": {
+      "description": "Google Gemini API key (optional)"
+    },
+    "TOGETHER_API_KEY": {
+      "description": "Together AI API key (optional)"
+    }
+  }
 }

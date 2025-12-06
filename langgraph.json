@@ -1,0 +1,8 @@
+{
+  "$schema": "https://langchain-ai.github.io/langgraph/schemas/langgraph.json",
+  "dependencies": ["."],
+  "graphs": {
+    "data_extraction_agent": "./data_extraction_agent/agent.py:agent"
+  },
+  "env": ".env"
+}

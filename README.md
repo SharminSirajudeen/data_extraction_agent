@@ -1,104 +1,284 @@
 # Data Extraction Agent
 
-This project implements a Data Extraction Agent using the LangChain DeepAgents framework. The agent is designed to intelligently extract specific information from various data sources (web, APIs, local files) based on natural language requests.
+AI-powered data extraction agent built on LangChain's [Deep Agents](https://github.com/langchain-ai/deepagents) framework with **multi-provider LLM support** prioritizing **open-source models**.
 
 ## Features
 
--   **DeepAgents Framework**: Leverages the powerful DeepAgents harness for planning, sub-agent delegation, and tool utilization.
--   **Custom Tools**: Includes specialized tools for web search (Tavily) and generic API calls, extensible for various data sources.
--   **Intelligent Prompting**: Utilizes carefully crafted prompts to guide the agent's behavior, ensuring accuracy and preventing "spin-out."
--   **Codespaces Ready**: Configured for easy setup and development using GitHub Codespaces, ensuring a consistent and isolated environment.
+- **Multi-Provider LLM Support**: Groq, Together AI, OpenRouter, HuggingFace, Google Gemini, Anthropic Claude
+- **Open-Source First**: Prioritizes free/open-source models (Llama, Mixtral, Qwen)
+- **Automatic Fallback**: Seamlessly switches between providers on failures
+- **Cost Optimization**: Smart routing based on task complexity
+- **Data Sources**: Web, APIs, Databases (SQL/MongoDB), Files (CSV, Excel, JSON, PDF)
+- **Built on Deep Agents**: Planning, file system, sub-agent delegation
 
-## Project Structure
+## Quick Start (GitHub Codespaces)
 
--   `main.py`: The main entry point for the agent, defining its structure, tools, and prompts.
--   `tools.py`: Contains custom tools for data extraction, such as `tavily_search_tool` and `api_call_tool`.
--   `prompts.py`: Houses the specialized prompts and instructions that guide the agent's decision-making.
--   `test_agent.py`: Basic unit tests for the custom tools and agent creation.
--   `.devcontainer/`: Configuration files for GitHub Codespaces.
-    -   `devcontainer.json`: Defines the Codespace environment, including Python version, VS Code extensions, and post-creation commands for dependency installation.
--   `.gitignore`: Specifies files and directories to be ignored by Git.
+### 1. Open in Codespace
 
-## Setup and Running
+Click the button below to launch directly in GitHub Codespaces:
 
-This project is optimized for use with GitHub Codespaces, which provides a pre-configured development environment.
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/SharminSirajudeen/data_extraction_agent)
 
+Or manually:
+1. Go to the repository on GitHub
+2. Click "Code" -> "Codespaces" -> "Create codespace on main"
 
-
-### 1. Commit and Push to GitHub
-
-Since this project is already within a GitHub repository, you just need to commit the new files and push them to your remote repository.
+### 2. Configure API Keys
 
 ```bash
-git add .
-git commit -m "feat: Initial setup of Data Extraction Agent"
-git push
+# Copy the example environment file
+cp .env.example .env
+
+# Edit .env and add at least ONE provider key
+# Groq is recommended - it's FREE!
 ```
 
-### 2. Launch in GitHub Codespaces
+**Minimum requirement**: At least one API key:
+| Provider | Free Tier | Get Key |
+|----------|-----------|---------|
+| **Groq** | Yes (Recommended!) | [console.groq.com](https://console.groq.com) |
+| Together AI | Limited | [together.ai](https://api.together.xyz) |
+| OpenRouter | Some models | [openrouter.ai](https://openrouter.ai) |
+| HuggingFace | Yes | [huggingface.co](https://huggingface.co/settings/tokens) |
+| Google | Yes | [aistudio.google.com](https://aistudio.google.com/apikey) |
+| Anthropic | No | [console.anthropic.com](https://console.anthropic.com) |
 
-Once the project is on GitHub:
+### 3. Run the Agent
 
-1.  Go to your GitHub repository page.
-2.  Click the "Code" button.
-3.  Select the "Codespaces" tab and click "Create codespace on main".
-
-GitHub will provision a new Codespace based on the `.devcontainer/devcontainer.json` configuration. This process will automatically install all required dependencies, including `deepagents` from its GitHub repository, `langchain`, `anthropic`, `tavily-python`, etc.
-
-### 3. Set Environment Variables
-
-The agent requires API keys for its operation. Set the following environment variables in your Codespace's `.bashrc` or `.zshrc` file, or directly in the Codespace Secrets:
-
--   `TAVILY_API_KEY`: Your API key for Tavily (for web search).
--   `ANTHROPIC_API_KEY`: Your API key for Anthropic (for the LLM, e.g., Claude).
-
-To set them in your Codespace terminal:
-
+**Option A: Jupyter Notebook** (Interactive)
 ```bash
-echo 'export TAVILY_API_KEY="your_tavily_api_key_here"' >> ~/.bashrc
-echo 'export ANTHROPIC_API_KEY="your_anthropic_api_key_here"' >> ~/.bashrc
-source ~/.bashrc # Or ~/.zshrc if you configured zsh
+jupyter notebook data_extraction_agent.ipynb
 ```
 
-**Note**: For Codespaces, it's generally recommended to use Codespace Secrets for sensitive information. You can configure these in your repository settings on GitHub.
-
-### 4. Run the Tests (Optional but Recommended)
-
-You can run the provided unit tests to ensure the custom tools are working as expected:
-
+**Option B: LangGraph Server** (Production)
 ```bash
-python -m unittest test_agent.py
+langgraph dev
 ```
 
-### 5. Interact with the Agent
+**Option C: Python Script**
+```python
+from data_extraction_agent import create_data_extraction_agent
 
-The `main.py` file contains an example of how to create and invoke the data extraction agent. You can modify the `if __name__ == "__main__":` block in `main.py` to experiment with different queries.
+agent = create_data_extraction_agent()
 
-To run the `main.py` script:
-
-```bash
-python main.py
+result = await agent.ainvoke({
+    "messages": [{"role": "user", "content": "Extract all products from https://fakestoreapi.com/products"}]
+})
 ```
 
-You can then modify the `user_query` variable in `main.py` to test different data extraction scenarios. For a more interactive experience, you would typically integrate this agent into a LangGraph application or a custom UI.
+## Architecture
+
+```
+data_extraction_agent/
+├── data_extraction_agent/
+│   ├── __init__.py          # Package exports
+│   ├── agent.py             # Main agent configuration
+│   ├── tools.py             # 12 extraction tools
+│   ├── prompts.py           # Workflow prompts
+│   └── providers/           # Multi-provider LLM support
+│       ├── factory.py       # Provider factory
+│       ├── router.py        # Smart routing
+│       └── fallback.py      # Automatic fallback
+├── data_extraction_agent.ipynb  # Interactive notebook
+├── langgraph.json           # LangGraph server config
+├── pyproject.toml           # Dependencies
+└── .env.example             # Environment template
+```
+
+## LLM Providers
+
+### Priority Order (Open-Source First)
+
+1. **Groq** - Free tier, ultra-fast (750 tokens/sec), Llama models
+2. **Together AI** - Budget-friendly, access to 405B models
+3. **OpenRouter** - Unified API, some free models
+4. **HuggingFace** - Free experimentation
+5. **Google Gemini** - Low cost, long context
+6. **Anthropic Claude** - Commercial fallback for complex tasks
+
+### Model Selection by Task
+
+| Task Type | Recommended Model | Provider |
+|-----------|-------------------|----------|
+| Simple extraction | llama-3.1-8b-instant | Groq |
+| API parsing | llama-4-scout-17b | Groq |
+| Schema analysis | Qwen2.5-72B | Together |
+| Complex reasoning | claude-sonnet-4 | Anthropic |
+| Long documents | gemini-1.5-pro | Google |
+
+### Routing Strategies
 
 ```python
-# Example of direct invocation in main.py
-if __name__ == "__main__":
-    # ... (agent creation code) ...
+from data_extraction_agent.providers import RoutingStrategy
 
-    # user_query = "Find the current stock price of Google (GOOGL) and write it to a file named 'google_stock.txt'."
-    # result = data_extraction_agent.invoke({"messages": [HumanMessage(content=user_query)]})
-    # print(result)
+# Open-source only (default)
+agent = create_data_extraction_agent(strategy=RoutingStrategy.OPEN_SOURCE_ONLY)
+
+# Cost optimized
+agent = create_data_extraction_agent(strategy=RoutingStrategy.COST_OPTIMIZED)
+
+# Quality first
+agent = create_data_extraction_agent(strategy=RoutingStrategy.QUALITY_FIRST)
+
+# Speed first
+agent = create_data_extraction_agent(strategy=RoutingStrategy.SPEED_FIRST)
 ```
 
-Remember that the `deepagents` framework uses LangGraph under the hood, and for complex, multi-turn interactions, you would typically manage the agent's state and execution flow within a LangGraph application.
+## Extraction Tools
 
-## Extending the Agent
+| Tool | Purpose |
+|------|---------|
+| `web_search` | Search web for data sources |
+| `fetch_url` | Get full webpage content |
+| `call_api` | Make REST API calls |
+| `query_sql_database` | Query PostgreSQL, MySQL, SQLite |
+| `query_mongodb` | Query MongoDB collections |
+| `extract_from_csv` | Parse CSV files |
+| `extract_from_excel` | Parse Excel files |
+| `extract_from_json` | Parse JSON files |
+| `extract_from_pdf` | Extract text from PDFs |
+| `analyze_schema` | Understand data structure |
+| `transform_data` | Clean and filter data |
+| `think_tool` | Strategic reflection |
 
--   **Add More Tools**: Create new tool functions in `tools.py` for interacting with specific databases, internal APIs, or other data sources.
--   **Refine Prompts**: Adjust `prompts.py` to fine-tune the agent's behavior for specific data extraction tasks.
--   **Sub-Agents**: Implement more specialized sub-agents in `main.py` or separate files to handle particular aspects of data processing or research.
+## Deep Agents Built-in Tools
 
----
-**Disclaimer**: This project is a starting point for building a sophisticated data extraction agent. Further development and testing are required for production use cases.
+In addition to extraction tools, you get:
+- `write_todos` / `read_todos` - Task planning
+- `write_file` / `read_file` - File operations
+- `task` - Sub-agent delegation
+- `ls` / `glob` / `grep` - File system exploration
+- `execute` - Shell commands (sandboxed)
+
+## Example Use Cases
+
+### 1. API Data Extraction
+```python
+request = """
+Extract all products from https://fakestoreapi.com/products
+Return: id, title, price, category, rating
+Format: JSON
+"""
+```
+
+### 2. Web Research
+```python
+request = """
+Search for the top 10 Python web scraping libraries.
+For each: name, GitHub URL, stars, main features.
+Return as structured JSON report.
+"""
+```
+
+### 3. Database Query
+```python
+request = """
+Connect to PostgreSQL: postgresql://user:pass@host/db
+Extract all users created in the last 30 days.
+Fields: id, email, created_at, status
+"""
+```
+
+### 4. File Processing
+```python
+request = """
+Extract data from these files:
+- /data/sales.csv
+- /data/inventory.xlsx
+- /data/config.json
+
+Merge into a single dataset and save to /output/combined.json
+"""
+```
+
+## Running in Codespaces
+
+GitHub Codespaces provides 60 hours/month free (2-core) or 30 hours (4-core).
+
+### Advantages
+- **No local storage needed** - Everything runs in the cloud
+- **Pre-configured environment** - DevContainer handles setup
+- **Persistent workspace** - Code and data saved between sessions
+- **Easy API key management** - Use Codespace secrets
+
+### Storage Tips
+- Codespace storage: 15GB default
+- Use `/tmp` for temporary files
+- Clean up downloaded data after extraction
+- Use external storage (S3, GCS) for large datasets
+
+### Resource Configuration
+Edit `.devcontainer/devcontainer.json`:
+```json
+{
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb",
+    "storage": "32gb"
+  }
+}
+```
+
+## Development
+
+### Local Setup
+```bash
+# Clone repository
+git clone https://github.com/SharminSirajudeen/data_extraction_agent.git
+cd data_extraction_agent
+
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # or `venv\Scripts\activate` on Windows
+
+# Install dependencies
+pip install -e ".[dev]"
+
+# Copy and configure environment
+cp .env.example .env
+# Edit .env with your API keys
+```
+
+### Running Tests
+```bash
+pytest tests/
+```
+
+### Code Quality
+```bash
+ruff check .
+black .
+mypy .
+```
+
+## Deployment
+
+### LangGraph Cloud
+```bash
+# Deploy to LangGraph Cloud
+langgraph deploy
+```
+
+### Docker
+```bash
+docker build -t data-extraction-agent .
+docker run -p 8000:8000 --env-file .env data-extraction-agent
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests and linting
+5. Submit a pull request
+
+## License
+
+MIT License - See [LICENSE](LICENSE) for details.
+
+## Acknowledgments
+
+- [LangChain Deep Agents](https://github.com/langchain-ai/deepagents) - Core framework
+- [LangGraph](https://github.com/langchain-ai/langgraph) - Agent orchestration
+- Inspired by the Deep Agents video by Lance from LangChain
