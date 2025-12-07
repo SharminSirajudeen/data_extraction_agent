@@ -19,105 +19,255 @@
             overflow: hidden;
         }
 
-        /* Glass bubble elements - GPU accelerated */
+        /* Glass bubble elements - Advanced GPU accelerated */
         .bouncing-element {
             position: fixed;
             pointer-events: none;
             z-index: 0;
-            will-change: transform, border-radius;
+            will-change: transform;
             transform: translateZ(0);
             backface-visibility: hidden;
-            /* Glass effect */
-            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.2) 30%, transparent 70%);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            perspective: 1000px;
+            /* Multi-layered realistic glass effect */
+            background:
+                /* Top highlight - specular reflection */
+                radial-gradient(ellipse at 25% 20%, rgba(255, 255, 255, 0.95) 0%, transparent 40%),
+                /* Secondary highlight */
+                radial-gradient(ellipse at 70% 80%, rgba(255, 255, 255, 0.4) 0%, transparent 50%),
+                /* Core glass body with subtle gradient */
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 50%, transparent 80%);
+            /* Realistic glass border with light refraction */
+            border: 1.5px solid rgba(255, 255, 255, 0.6);
+            /* Multi-layer shadows for depth */
             box-shadow:
-                inset 0 0 30px rgba(255, 255, 255, 0.3),
-                0 10px 40px rgba(0, 0, 0, 0.1),
-                0 0 20px rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(2px);
+                /* Inner glow - light scattering inside glass */
+                inset 0 0 40px rgba(255, 255, 255, 0.4),
+                inset -10px -10px 60px rgba(255, 255, 255, 0.15),
+                /* Outer shadow - depth */
+                0 15px 50px rgba(0, 0, 0, 0.12),
+                0 5px 20px rgba(0, 0, 0, 0.08),
+                /* Soft outer glow */
+                0 0 30px rgba(255, 255, 255, 0.15);
+            /* Enhanced blur for frosted glass effect */
+            backdrop-filter: blur(3px) saturate(1.2);
+            -webkit-backdrop-filter: blur(3px) saturate(1.2);
+            /* Smooth filter transitions */
+            transition: filter 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .bounce-1 {
             width: 180px;
             height: 180px;
             background:
-                radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9) 0%, transparent 50%),
-                radial-gradient(circle at 70% 80%, rgba(102, 126, 234, 0.3) 0%, transparent 50%),
-                linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
-            animation: morph1 8s ease-in-out infinite;
+                /* Specular highlights */
+                radial-gradient(ellipse at 22% 18%, rgba(255, 255, 255, 0.95) 0%, transparent 35%),
+                radial-gradient(ellipse at 75% 85%, rgba(255, 255, 255, 0.35) 0%, transparent 45%),
+                /* Color tint layer */
+                radial-gradient(circle at 40% 40%, rgba(102, 126, 234, 0.25) 0%, transparent 60%),
+                radial-gradient(circle at 70% 80%, rgba(118, 75, 162, 0.2) 0%, transparent 55%),
+                /* Depth layer */
+                linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+            animation: morph1 8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
         }
 
         .bounce-2 {
             width: 140px;
             height: 140px;
             background:
-                radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9) 0%, transparent 50%),
-                radial-gradient(circle at 70% 80%, rgba(240, 147, 251, 0.3) 0%, transparent 50%),
-                linear-gradient(135deg, rgba(240, 147, 251, 0.2) 0%, rgba(245, 87, 108, 0.2) 100%);
-            animation: morph2 10s ease-in-out infinite;
+                radial-gradient(ellipse at 28% 22%, rgba(255, 255, 255, 0.95) 0%, transparent 38%),
+                radial-gradient(ellipse at 72% 82%, rgba(255, 255, 255, 0.38) 0%, transparent 48%),
+                radial-gradient(circle at 45% 35%, rgba(240, 147, 251, 0.28) 0%, transparent 58%),
+                radial-gradient(circle at 65% 75%, rgba(245, 87, 108, 0.22) 0%, transparent 52%),
+                linear-gradient(135deg, rgba(240, 147, 251, 0.16) 0%, rgba(245, 87, 108, 0.16) 100%);
+            animation: morph2 10s cubic-bezier(0.42, 0, 0.58, 1) infinite;
         }
 
         .bounce-3 {
             width: 220px;
             height: 220px;
             background:
-                radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9) 0%, transparent 50%),
-                radial-gradient(circle at 70% 80%, rgba(79, 172, 254, 0.3) 0%, transparent 50%),
-                linear-gradient(135deg, rgba(79, 172, 254, 0.2) 0%, rgba(0, 242, 254, 0.2) 100%);
-            animation: morph3 12s ease-in-out infinite;
+                radial-gradient(ellipse at 24% 16%, rgba(255, 255, 255, 0.95) 0%, transparent 32%),
+                radial-gradient(ellipse at 78% 88%, rgba(255, 255, 255, 0.32) 0%, transparent 46%),
+                radial-gradient(circle at 38% 42%, rgba(79, 172, 254, 0.26) 0%, transparent 62%),
+                radial-gradient(circle at 68% 78%, rgba(0, 242, 254, 0.24) 0%, transparent 56%),
+                linear-gradient(135deg, rgba(79, 172, 254, 0.14) 0%, rgba(0, 242, 254, 0.14) 100%);
+            animation: morph3 12s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
 
         .bounce-4 {
             width: 120px;
             height: 120px;
             background:
-                radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9) 0%, transparent 50%),
-                radial-gradient(circle at 70% 80%, rgba(67, 233, 123, 0.3) 0%, transparent 50%),
-                linear-gradient(135deg, rgba(67, 233, 123, 0.2) 0%, rgba(56, 249, 215, 0.2) 100%);
-            animation: morph4 9s ease-in-out infinite;
+                radial-gradient(ellipse at 26% 20%, rgba(255, 255, 255, 0.95) 0%, transparent 36%),
+                radial-gradient(ellipse at 74% 84%, rgba(255, 255, 255, 0.36) 0%, transparent 47%),
+                radial-gradient(circle at 42% 38%, rgba(67, 233, 123, 0.27) 0%, transparent 59%),
+                radial-gradient(circle at 66% 76%, rgba(56, 249, 215, 0.23) 0%, transparent 54%),
+                linear-gradient(135deg, rgba(67, 233, 123, 0.15) 0%, rgba(56, 249, 215, 0.15) 100%);
+            animation: morph4 9s cubic-bezier(0.43, 0.02, 0.57, 0.98) infinite;
         }
 
         .bounce-5 {
             width: 160px;
             height: 160px;
             background:
-                radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9) 0%, transparent 50%),
-                radial-gradient(circle at 70% 80%, rgba(250, 112, 154, 0.3) 0%, transparent 50%),
-                linear-gradient(135deg, rgba(250, 112, 154, 0.2) 0%, rgba(254, 225, 64, 0.2) 100%);
-            animation: morph5 11s ease-in-out infinite;
+                radial-gradient(ellipse at 25% 19%, rgba(255, 255, 255, 0.95) 0%, transparent 34%),
+                radial-gradient(ellipse at 76% 86%, rgba(255, 255, 255, 0.34) 0%, transparent 49%),
+                radial-gradient(circle at 40% 36%, rgba(250, 112, 154, 0.26) 0%, transparent 61%),
+                radial-gradient(circle at 69% 77%, rgba(254, 225, 64, 0.21) 0%, transparent 53%),
+                linear-gradient(135deg, rgba(250, 112, 154, 0.15) 0%, rgba(254, 225, 64, 0.15) 100%);
+            animation: morph5 11s cubic-bezier(0.44, 0.01, 0.56, 0.99) infinite;
         }
 
-        /* Shape-shifting animations */
+        /* Shape-shifting animations - Buttery smooth with extra keyframes */
         @keyframes morph1 {
-            0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-            25% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
-            50% { border-radius: 50% 60% 30% 60% / 30% 40% 70% 50%; }
-            75% { border-radius: 40% 50% 60% 50% / 60% 50% 40% 60%; }
+            0%, 100% {
+                border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+                transform: rotate(0deg) scale(1);
+            }
+            12.5% {
+                border-radius: 45% 55% 50% 50% / 55% 45% 50% 60%;
+                transform: rotate(2deg) scale(1.01);
+            }
+            25% {
+                border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+                transform: rotate(0deg) scale(1);
+            }
+            37.5% {
+                border-radius: 40% 55% 50% 55% / 40% 50% 50% 55%;
+                transform: rotate(-2deg) scale(0.99);
+            }
+            50% {
+                border-radius: 50% 60% 30% 60% / 30% 40% 70% 50%;
+                transform: rotate(0deg) scale(1);
+            }
+            62.5% {
+                border-radius: 45% 55% 45% 55% / 55% 45% 60% 50%;
+                transform: rotate(1deg) scale(1.01);
+            }
+            75% {
+                border-radius: 40% 50% 60% 50% / 60% 50% 40% 60%;
+                transform: rotate(0deg) scale(1);
+            }
+            87.5% {
+                border-radius: 55% 45% 45% 60% / 55% 40% 55% 50%;
+                transform: rotate(-1deg) scale(0.99);
+            }
         }
 
         @keyframes morph2 {
-            0%, 100% { border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%; }
-            25% { border-radius: 50% 50% 40% 60% / 40% 60% 50% 50%; }
-            50% { border-radius: 60% 40% 50% 50% / 50% 50% 40% 60%; }
-            75% { border-radius: 45% 55% 55% 45% / 55% 45% 55% 45%; }
+            0%, 100% {
+                border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%;
+                transform: rotate(0deg) scale(1);
+            }
+            12.5% {
+                border-radius: 45% 55% 50% 50% / 50% 50% 55% 45%;
+                transform: rotate(-2deg) scale(1.02);
+            }
+            25% {
+                border-radius: 50% 50% 40% 60% / 40% 60% 50% 50%;
+                transform: rotate(0deg) scale(1);
+            }
+            37.5% {
+                border-radius: 55% 45% 45% 55% / 45% 55% 45% 55%;
+                transform: rotate(2deg) scale(0.98);
+            }
+            50% {
+                border-radius: 60% 40% 50% 50% / 50% 50% 40% 60%;
+                transform: rotate(0deg) scale(1);
+            }
+            62.5% {
+                border-radius: 50% 50% 55% 45% / 55% 45% 50% 50%;
+                transform: rotate(-1deg) scale(1.01);
+            }
+            75% {
+                border-radius: 45% 55% 55% 45% / 55% 45% 55% 45%;
+                transform: rotate(0deg) scale(1);
+            }
+            87.5% {
+                border-radius: 42% 58% 58% 42% / 58% 42% 58% 42%;
+                transform: rotate(1deg) scale(0.99);
+            }
         }
 
         @keyframes morph3 {
-            0%, 100% { border-radius: 50% 50% 40% 60% / 40% 60% 50% 50%; }
-            33% { border-radius: 60% 40% 60% 40% / 50% 50% 50% 50%; }
-            66% { border-radius: 40% 60% 50% 50% / 60% 40% 60% 40%; }
+            0%, 100% {
+                border-radius: 50% 50% 40% 60% / 40% 60% 50% 50%;
+                transform: rotate(0deg) scale(1);
+            }
+            16.6% {
+                border-radius: 55% 45% 50% 50% / 45% 55% 50% 50%;
+                transform: rotate(1deg) scale(1.01);
+            }
+            33% {
+                border-radius: 60% 40% 60% 40% / 50% 50% 50% 50%;
+                transform: rotate(0deg) scale(1);
+            }
+            50% {
+                border-radius: 50% 50% 55% 45% / 55% 45% 55% 45%;
+                transform: rotate(-1deg) scale(0.99);
+            }
+            66% {
+                border-radius: 40% 60% 50% 50% / 60% 40% 60% 40%;
+                transform: rotate(0deg) scale(1);
+            }
+            83% {
+                border-radius: 45% 55% 45% 55% / 50% 50% 55% 45%;
+                transform: rotate(1deg) scale(1.01);
+            }
         }
 
         @keyframes morph4 {
-            0%, 100% { border-radius: 55% 45% 50% 50% / 50% 50% 45% 55%; }
-            50% { border-radius: 45% 55% 55% 45% / 55% 45% 50% 50%; }
+            0%, 100% {
+                border-radius: 55% 45% 50% 50% / 50% 50% 45% 55%;
+                transform: rotate(0deg) scale(1);
+            }
+            25% {
+                border-radius: 50% 50% 52% 48% / 52% 48% 48% 52%;
+                transform: rotate(-2deg) scale(1.02);
+            }
+            50% {
+                border-radius: 45% 55% 55% 45% / 55% 45% 50% 50%;
+                transform: rotate(0deg) scale(1);
+            }
+            75% {
+                border-radius: 52% 48% 50% 50% / 48% 52% 52% 48%;
+                transform: rotate(2deg) scale(0.98);
+            }
         }
 
         @keyframes morph5 {
-            0%, 100% { border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; }
-            25% { border-radius: 60% 40% 40% 60% / 50% 50% 50% 50%; }
-            50% { border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%; }
-            75% { border-radius: 55% 45% 45% 55% / 55% 55% 45% 45%; }
+            0%, 100% {
+                border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+                transform: rotate(0deg) scale(1);
+            }
+            12.5% {
+                border-radius: 55% 45% 45% 55% / 55% 55% 45% 45%;
+                transform: rotate(1deg) scale(1.01);
+            }
+            25% {
+                border-radius: 60% 40% 40% 60% / 50% 50% 50% 50%;
+                transform: rotate(0deg) scale(1);
+            }
+            37.5% {
+                border-radius: 50% 50% 50% 50% / 45% 45% 55% 55%;
+                transform: rotate(-1deg) scale(0.99);
+            }
+            50% {
+                border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%;
+                transform: rotate(0deg) scale(1);
+            }
+            62.5% {
+                border-radius: 45% 55% 55% 45% / 50% 50% 50% 50%;
+                transform: rotate(1deg) scale(1.01);
+            }
+            75% {
+                border-radius: 55% 45% 45% 55% / 55% 55% 45% 45%;
+                transform: rotate(0deg) scale(1);
+            }
+            87.5% {
+                border-radius: 52% 48% 48% 52% / 58% 58% 42% 42%;
+                transform: rotate(-1deg) scale(0.99);
+            }
         }
 
         .container {
@@ -359,65 +509,81 @@
     </div>
 
     <script>
-        // Glass bubbles animation - Slow, smooth, floating
+        // Glass bubbles animation - Ultra-smooth, floating with depth
         class BouncingBall {
-            constructor(element) {
+            constructor(element, index) {
                 this.element = element;
                 this.width = parseFloat(getComputedStyle(element).width);
                 this.x = Math.random() * (window.innerWidth - this.width);
                 this.y = Math.random() * (window.innerHeight - this.width);
-                // Much slower base velocity
-                this.vx = (Math.random() - 0.5) * 0.8;
-                this.vy = (Math.random() - 0.5) * 0.8;
-                // Slower speed multiplier range
-                this.speedMultiplier = 0.2 + Math.random() * 0.4;
+                // Ultra-slow base velocity for dreamy float
+                this.vx = (Math.random() - 0.5) * 0.6;
+                this.vy = (Math.random() - 0.5) * 0.6;
+                // Slower speed multiplier
+                this.speedMultiplier = 0.15 + Math.random() * 0.35;
                 this.changeDirectionTimer = 0;
                 this.maxWidth = window.innerWidth - this.width;
                 this.maxHeight = window.innerHeight - this.width;
+                // Subtle floating effect parameters
+                this.floatOffset = index * 1.2; // Phase offset for variety
+                this.floatSpeed = 0.0008 + Math.random() * 0.0004;
+                this.time = 0;
+                // Breathing scale effect
+                this.breatheOffset = index * 0.8;
+                this.breatheSpeed = 0.0006 + Math.random() * 0.0003;
                 this.update();
             }
 
             update() {
-                // Slowly change speed over time
+                this.time++;
+
+                // Slowly change direction for organic movement
                 this.changeDirectionTimer++;
-                if (this.changeDirectionTimer > 300 + Math.random() * 400) {
-                    // Gentle speed changes
-                    this.speedMultiplier = 0.15 + Math.random() * 0.5;
-                    this.vx += (Math.random() - 0.5) * 0.3;
-                    this.vy += (Math.random() - 0.5) * 0.3;
-                    // Keep velocities bounded
-                    this.vx = Math.max(-0.8, Math.min(0.8, this.vx));
-                    this.vy = Math.max(-0.8, Math.min(0.8, this.vy));
+                if (this.changeDirectionTimer > 400 + Math.random() * 500) {
+                    this.speedMultiplier = 0.12 + Math.random() * 0.45;
+                    this.vx += (Math.random() - 0.5) * 0.25;
+                    this.vy += (Math.random() - 0.5) * 0.25;
+                    // Gentle velocity bounds
+                    this.vx = Math.max(-0.7, Math.min(0.7, this.vx));
+                    this.vy = Math.max(-0.7, Math.min(0.7, this.vy));
                     this.changeDirectionTimer = 0;
                 }
+
+                // Position with gentle float
+                const floatY = Math.sin((this.time + this.floatOffset) * this.floatSpeed) * 15;
+                const floatX = Math.cos((this.time + this.floatOffset) * this.floatSpeed * 0.7) * 10;
 
                 this.x += this.vx * this.speedMultiplier;
                 this.y += this.vy * this.speedMultiplier;
 
-                // Soft bounce off walls
+                // Soft elastic bounce
                 if (this.x <= 0 || this.x >= this.maxWidth) {
-                    this.vx *= -0.9;
+                    this.vx *= -0.85;
                     this.x = Math.max(0, Math.min(this.x, this.maxWidth));
                 }
                 if (this.y <= 0 || this.y >= this.maxHeight) {
-                    this.vy *= -0.9;
+                    this.vy *= -0.85;
                     this.y = Math.max(0, Math.min(this.y, this.maxHeight));
                 }
 
-                // Use transform for GPU acceleration
-                this.element.style.transform = `translate3d(${this.x}px, ${this.y}px, 0)`;
+                // Subtle breathing scale (0.98 to 1.02)
+                const breatheScale = 1 + Math.sin((this.time + this.breatheOffset) * this.breatheSpeed) * 0.02;
+
+                // GPU-accelerated transform with all effects
+                this.element.style.transform =
+                    `translate3d(${this.x + floatX}px, ${this.y + floatY}px, 0) scale(${breatheScale})`;
 
                 requestAnimationFrame(() => this.update());
             }
         }
 
-        // Initialize bouncing balls
+        // Initialize bouncing balls with index for phase variation
         const balls = [
-            new BouncingBall(document.getElementById('ball1')),
-            new BouncingBall(document.getElementById('ball2')),
-            new BouncingBall(document.getElementById('ball3')),
-            new BouncingBall(document.getElementById('ball4')),
-            new BouncingBall(document.getElementById('ball5'))
+            new BouncingBall(document.getElementById('ball1'), 0),
+            new BouncingBall(document.getElementById('ball2'), 1),
+            new BouncingBall(document.getElementById('ball3'), 2),
+            new BouncingBall(document.getElementById('ball4'), 3),
+            new BouncingBall(document.getElementById('ball5'), 4)
         ];
 
         // Chat functionality
