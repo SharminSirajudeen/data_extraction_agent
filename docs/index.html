@@ -15,17 +15,20 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background: #ffffff;
             min-height: 100vh;
-            color: #333;
+            color: #2c3e50;
             overflow: hidden;
         }
 
-        /* Bouncing elements */
+        /* Bouncing elements - GPU accelerated */
         .bouncing-element {
             position: fixed;
             border-radius: 50%;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.6;
+            opacity: 0.5;
+            will-change: transform;
+            transform: translateZ(0);
+            backface-visibility: hidden;
         }
 
         .bounce-1 {
@@ -77,10 +80,13 @@
 
         header h1 {
             font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
             background: linear-gradient(90deg, #1a237e 0%, #0d47a1 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
+            background-clip: text;
+            margin-bottom: 8px;
         }
 
         .status-indicator {
@@ -90,8 +96,9 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 14px;
-            color: #666;
+            font-size: 13px;
+            font-weight: 500;
+            color: #64748b;
         }
 
         .status-dot {
@@ -122,24 +129,33 @@
 
         .chat-container {
             flex: 1;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 24px;
             overflow-y: auto;
+            overflow-x: hidden;
             margin-bottom: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            will-change: scroll-position;
         }
 
         .message {
             margin-bottom: 20px;
-            animation: fadeIn 0.3s ease;
+            animation: fadeIn 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform, opacity;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translate3d(0, 10px, 0);
+            }
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
         }
 
         .message.user {
@@ -149,27 +165,33 @@
         .message-content {
             display: inline-block;
             max-width: 80%;
-            padding: 14px 20px;
-            border-radius: 20px;
-            line-height: 1.5;
+            padding: 14px 18px;
+            border-radius: 18px;
+            line-height: 1.6;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            word-wrap: break-word;
+            transform: translateZ(0);
         }
 
         .user .message-content {
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #fff;
             border-bottom-right-radius: 4px;
         }
 
         .assistant .message-content {
-            background: #1a237e;
-            color: #fff;
+            background: #1e293b;
+            color: #f8fafc;
             border-bottom-left-radius: 4px;
         }
 
         .message-label {
-            font-size: 12px;
-            color: #888;
-            margin-bottom: 5px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            margin-bottom: 6px;
         }
 
         .input-area {
@@ -180,43 +202,51 @@
         .input-area textarea {
             flex: 1;
             padding: 16px 20px;
-            border: 2px solid #e0e0e0;
-            border-radius: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
             background: #fff;
-            color: #333;
-            font-size: 16px;
+            color: #1e293b;
+            font-size: 15px;
             resize: none;
             height: 60px;
             font-family: inherit;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .input-area textarea:focus {
             outline: none;
             border-color: #667eea;
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15);
         }
 
         .input-area button {
             padding: 16px 32px;
-            background: linear-gradient(90deg, #1a237e 0%, #0d47a1 100%);
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
             border: none;
-            border-radius: 16px;
+            border-radius: 14px;
             color: #fff;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s ease;
+            box-shadow: 0 2px 8px rgba(30, 58, 138, 0.2);
         }
 
         .input-area button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(26, 35, 126, 0.4);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.3);
+        }
+
+        .input-area button:active {
+            transform: translateY(0);
         }
 
         .input-area button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
             transform: none;
+            box-shadow: 0 2px 8px rgba(30, 58, 138, 0.2);
         }
 
         pre {
@@ -270,16 +300,19 @@
     </div>
 
     <script>
-        // Bouncing balls animation
+        // Bouncing balls animation - Optimized with transform
         class BouncingBall {
             constructor(element) {
                 this.element = element;
-                this.x = Math.random() * (window.innerWidth - 100);
-                this.y = Math.random() * (window.innerHeight - 100);
+                this.width = parseFloat(getComputedStyle(element).width);
+                this.x = Math.random() * (window.innerWidth - this.width);
+                this.y = Math.random() * (window.innerHeight - this.width);
                 this.vx = (Math.random() - 0.5) * 4;
                 this.vy = (Math.random() - 0.5) * 4;
                 this.speedMultiplier = 0.5 + Math.random() * 1.5;
                 this.changeDirectionTimer = 0;
+                this.maxWidth = window.innerWidth - this.width;
+                this.maxHeight = window.innerHeight - this.width;
                 this.update();
             }
 
@@ -297,17 +330,17 @@
                 this.y += this.vy * this.speedMultiplier;
 
                 // Bounce off walls
-                if (this.x <= 0 || this.x >= window.innerWidth - 100) {
+                if (this.x <= 0 || this.x >= this.maxWidth) {
                     this.vx *= -1;
-                    this.x = Math.max(0, Math.min(this.x, window.innerWidth - 100));
+                    this.x = Math.max(0, Math.min(this.x, this.maxWidth));
                 }
-                if (this.y <= 0 || this.y >= window.innerHeight - 100) {
+                if (this.y <= 0 || this.y >= this.maxHeight) {
                     this.vy *= -1;
-                    this.y = Math.max(0, Math.min(this.y, window.innerHeight - 100));
+                    this.y = Math.max(0, Math.min(this.y, this.maxHeight));
                 }
 
-                this.element.style.left = this.x + 'px';
-                this.element.style.top = this.y + 'px';
+                // Use transform for GPU acceleration
+                this.element.style.transform = `translate3d(${this.x}px, ${this.y}px, 0)`;
 
                 requestAnimationFrame(() => this.update());
             }
@@ -328,9 +361,6 @@
         let currentModel = 'deepseek-r1:8b';
 
         async function connect() {
-            const statusDot = document.getElementById('statusDot');
-            const statusText = document.getElementById('statusText');
-
             statusDot.className = 'status-dot connecting';
             statusText.textContent = 'Connecting...';
 
@@ -361,8 +391,14 @@
             }
         }
 
+        // Cache DOM elements
+        const chatContainer = document.getElementById('chat');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+
         function addMessage(role, content) {
-            const chat = document.getElementById('chat');
             const messageDiv = document.createElement('div');
             messageDiv.className = 'message ' + role;
 
@@ -376,8 +412,12 @@
 
             messageDiv.appendChild(label);
             messageDiv.appendChild(contentDiv);
-            chat.appendChild(messageDiv);
-            chat.scrollTop = chat.scrollHeight;
+            chatContainer.appendChild(messageDiv);
+
+            // Smooth scroll with requestAnimationFrame
+            requestAnimationFrame(() => {
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            });
 
             return contentDiv;
         }
@@ -391,18 +431,16 @@
         }
 
         async function sendMessage() {
-            const input = document.getElementById('userInput');
-            const message = input.value.trim();
+            const message = userInput.value.trim();
 
             if (!message) return;
 
-            input.value = '';
-            document.getElementById('sendBtn').disabled = true;
+            userInput.value = '';
+            sendBtn.disabled = true;
 
             addMessage('user', message);
             conversationHistory.push({ role: 'user', content: message });
 
-            const chat = document.getElementById('chat');
             const messageDiv = document.createElement('div');
             messageDiv.className = 'message assistant';
 
@@ -416,10 +454,14 @@
 
             messageDiv.appendChild(label);
             messageDiv.appendChild(contentDiv);
-            chat.appendChild(messageDiv);
-            chat.scrollTop = chat.scrollHeight;
+            chatContainer.appendChild(messageDiv);
+
+            requestAnimationFrame(() => {
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            });
 
             let fullResponse = '';
+            let updateCounter = 0;
 
             try {
                 const response = await fetch(ollamaUrl + '/api/chat', {
@@ -448,8 +490,14 @@
                                 const data = JSON.parse(line);
                                 if (data.message && data.message.content) {
                                     fullResponse += data.message.content;
-                                    contentDiv.innerHTML = formatMessage(fullResponse) + '<span class="streaming-cursor">▊</span>';
-                                    chat.scrollTop = chat.scrollHeight;
+                                    // Throttle DOM updates for better performance
+                                    updateCounter++;
+                                    if (updateCounter % 3 === 0) {
+                                        contentDiv.innerHTML = formatMessage(fullResponse) + '<span class="streaming-cursor">▊</span>';
+                                        requestAnimationFrame(() => {
+                                            chatContainer.scrollTop = chatContainer.scrollHeight;
+                                        });
+                                    }
                                 }
                             } catch (e) {}
                         }
@@ -464,15 +512,15 @@
                 contentDiv.innerHTML = 'Error: ' + error.message;
             }
 
-            document.getElementById('sendBtn').disabled = false;
-            input.focus();
+            sendBtn.disabled = false;
+            userInput.focus();
         }
 
         // Auto-connect on page load
-        window.onload = function() {
+        window.addEventListener('DOMContentLoaded', () => {
             connect();
-            document.getElementById('userInput').focus();
-        };
+            userInput.focus();
+        });
     </script>
 </body>
 </html>
