@@ -22,11 +22,10 @@
         /* Glass bubble elements - Advanced GPU accelerated */
         .bouncing-element {
             position: fixed;
-            top: 0;
-            left: 0;
             pointer-events: none;
             z-index: 0;
             will-change: transform;
+            transform: translateZ(0);
             backface-visibility: hidden;
             perspective: 1000px;
             /* Multi-layered realistic glass effect */
@@ -384,9 +383,9 @@
         }
 
         .user .message-content {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            color: #92400e;
-            border: 1px solid rgba(251, 191, 36, 0.3);
+            background: linear-gradient(135deg, #fffbeb 0%, #fef9c3 100%);
+            color: #78350f;
+            border: 1px solid rgba(251, 191, 36, 0.2);
             border-bottom-right-radius: 4px;
         }
 
@@ -516,7 +515,7 @@
         class BouncingBall {
             constructor(element, index) {
                 this.element = element;
-                this.width = parseFloat(getComputedStyle(element).width) || 150;
+                this.width = parseFloat(getComputedStyle(element).width);
                 this.x = Math.random() * (window.innerWidth - this.width);
                 this.y = Math.random() * (window.innerHeight - this.width);
                 // Ultra-slow base velocity for dreamy float
@@ -534,10 +533,6 @@
                 // Breathing scale effect
                 this.breatheOffset = index * 0.8;
                 this.breatheSpeed = 0.0006 + Math.random() * 0.0003;
-
-                // Apply initial position immediately
-                this.element.style.transform = `translate3d(${this.x}px, ${this.y}px, 0)`;
-
                 this.update();
             }
 
@@ -584,18 +579,14 @@
             }
         }
 
-        // Initialize bouncing balls after DOM is ready
-        let balls = [];
-
-        function initBalls() {
-            balls = [
-                new BouncingBall(document.getElementById('ball1'), 0),
-                new BouncingBall(document.getElementById('ball2'), 1),
-                new BouncingBall(document.getElementById('ball3'), 2),
-                new BouncingBall(document.getElementById('ball4'), 3),
-                new BouncingBall(document.getElementById('ball5'), 4)
-            ];
-        }
+        // Initialize bouncing balls with index for phase variation
+        const balls = [
+            new BouncingBall(document.getElementById('ball1'), 0),
+            new BouncingBall(document.getElementById('ball2'), 1),
+            new BouncingBall(document.getElementById('ball3'), 2),
+            new BouncingBall(document.getElementById('ball4'), 3),
+            new BouncingBall(document.getElementById('ball5'), 4)
+        ];
 
         // Chat functionality
         const ollamaUrl = 'https://ste-bicycle-idea-adventure.trycloudflare.com';
@@ -760,7 +751,6 @@
 
         // Auto-connect on page load
         window.addEventListener('DOMContentLoaded', () => {
-            initBalls(); // Initialize floating bubbles
             connect();
             userInput.focus();
         });
