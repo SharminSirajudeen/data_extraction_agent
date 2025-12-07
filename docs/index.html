@@ -19,46 +19,105 @@
             overflow: hidden;
         }
 
-        /* Bouncing elements - GPU accelerated */
+        /* Glass bubble elements - GPU accelerated */
         .bouncing-element {
             position: fixed;
-            border-radius: 50%;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.5;
-            will-change: transform;
+            will-change: transform, border-radius;
             transform: translateZ(0);
             backface-visibility: hidden;
+            /* Glass effect */
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.2) 30%, transparent 70%);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow:
+                inset 0 0 30px rgba(255, 255, 255, 0.3),
+                0 10px 40px rgba(0, 0, 0, 0.1),
+                0 0 20px rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(2px);
         }
 
         .bounce-1 {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            width: 180px;
+            height: 180px;
+            background:
+                radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(102, 126, 234, 0.3) 0%, transparent 50%),
+                linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            animation: morph1 8s ease-in-out infinite;
         }
 
         .bounce-2 {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            width: 140px;
+            height: 140px;
+            background:
+                radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(240, 147, 251, 0.3) 0%, transparent 50%),
+                linear-gradient(135deg, rgba(240, 147, 251, 0.2) 0%, rgba(245, 87, 108, 0.2) 100%);
+            animation: morph2 10s ease-in-out infinite;
         }
 
         .bounce-3 {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            width: 220px;
+            height: 220px;
+            background:
+                radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(79, 172, 254, 0.3) 0%, transparent 50%),
+                linear-gradient(135deg, rgba(79, 172, 254, 0.2) 0%, rgba(0, 242, 254, 0.2) 100%);
+            animation: morph3 12s ease-in-out infinite;
         }
 
         .bounce-4 {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            width: 120px;
+            height: 120px;
+            background:
+                radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(67, 233, 123, 0.3) 0%, transparent 50%),
+                linear-gradient(135deg, rgba(67, 233, 123, 0.2) 0%, rgba(56, 249, 215, 0.2) 100%);
+            animation: morph4 9s ease-in-out infinite;
         }
 
         .bounce-5 {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            width: 160px;
+            height: 160px;
+            background:
+                radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(250, 112, 154, 0.3) 0%, transparent 50%),
+                linear-gradient(135deg, rgba(250, 112, 154, 0.2) 0%, rgba(254, 225, 64, 0.2) 100%);
+            animation: morph5 11s ease-in-out infinite;
+        }
+
+        /* Shape-shifting animations */
+        @keyframes morph1 {
+            0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+            25% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+            50% { border-radius: 50% 60% 30% 60% / 30% 40% 70% 50%; }
+            75% { border-radius: 40% 50% 60% 50% / 60% 50% 40% 60%; }
+        }
+
+        @keyframes morph2 {
+            0%, 100% { border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%; }
+            25% { border-radius: 50% 50% 40% 60% / 40% 60% 50% 50%; }
+            50% { border-radius: 60% 40% 50% 50% / 50% 50% 40% 60%; }
+            75% { border-radius: 45% 55% 55% 45% / 55% 45% 55% 45%; }
+        }
+
+        @keyframes morph3 {
+            0%, 100% { border-radius: 50% 50% 40% 60% / 40% 60% 50% 50%; }
+            33% { border-radius: 60% 40% 60% 40% / 50% 50% 50% 50%; }
+            66% { border-radius: 40% 60% 50% 50% / 60% 40% 60% 40%; }
+        }
+
+        @keyframes morph4 {
+            0%, 100% { border-radius: 55% 45% 50% 50% / 50% 50% 45% 55%; }
+            50% { border-radius: 45% 55% 55% 45% / 55% 45% 50% 50%; }
+        }
+
+        @keyframes morph5 {
+            0%, 100% { border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; }
+            25% { border-radius: 60% 40% 40% 60% / 50% 50% 50% 50%; }
+            50% { border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%; }
+            75% { border-radius: 55% 45% 45% 55% / 55% 55% 45% 45%; }
         }
 
         .container {
@@ -300,16 +359,18 @@
     </div>
 
     <script>
-        // Bouncing balls animation - Optimized with transform
+        // Glass bubbles animation - Slow, smooth, floating
         class BouncingBall {
             constructor(element) {
                 this.element = element;
                 this.width = parseFloat(getComputedStyle(element).width);
                 this.x = Math.random() * (window.innerWidth - this.width);
                 this.y = Math.random() * (window.innerHeight - this.width);
-                this.vx = (Math.random() - 0.5) * 4;
-                this.vy = (Math.random() - 0.5) * 4;
-                this.speedMultiplier = 0.5 + Math.random() * 1.5;
+                // Much slower base velocity
+                this.vx = (Math.random() - 0.5) * 0.8;
+                this.vy = (Math.random() - 0.5) * 0.8;
+                // Slower speed multiplier range
+                this.speedMultiplier = 0.2 + Math.random() * 0.4;
                 this.changeDirectionTimer = 0;
                 this.maxWidth = window.innerWidth - this.width;
                 this.maxHeight = window.innerHeight - this.width;
@@ -317,25 +378,29 @@
             }
 
             update() {
-                // Randomly change speed
+                // Slowly change speed over time
                 this.changeDirectionTimer++;
-                if (this.changeDirectionTimer > 100 + Math.random() * 200) {
-                    this.speedMultiplier = 0.3 + Math.random() * 2;
-                    this.vx += (Math.random() - 0.5) * 2;
-                    this.vy += (Math.random() - 0.5) * 2;
+                if (this.changeDirectionTimer > 300 + Math.random() * 400) {
+                    // Gentle speed changes
+                    this.speedMultiplier = 0.15 + Math.random() * 0.5;
+                    this.vx += (Math.random() - 0.5) * 0.3;
+                    this.vy += (Math.random() - 0.5) * 0.3;
+                    // Keep velocities bounded
+                    this.vx = Math.max(-0.8, Math.min(0.8, this.vx));
+                    this.vy = Math.max(-0.8, Math.min(0.8, this.vy));
                     this.changeDirectionTimer = 0;
                 }
 
                 this.x += this.vx * this.speedMultiplier;
                 this.y += this.vy * this.speedMultiplier;
 
-                // Bounce off walls
+                // Soft bounce off walls
                 if (this.x <= 0 || this.x >= this.maxWidth) {
-                    this.vx *= -1;
+                    this.vx *= -0.9;
                     this.x = Math.max(0, Math.min(this.x, this.maxWidth));
                 }
                 if (this.y <= 0 || this.y >= this.maxHeight) {
-                    this.vy *= -1;
+                    this.vy *= -0.9;
                     this.y = Math.max(0, Math.min(this.y, this.maxHeight));
                 }
 
