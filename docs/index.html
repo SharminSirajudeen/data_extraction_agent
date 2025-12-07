@@ -22,10 +22,11 @@
         /* Glass bubble elements - Advanced GPU accelerated */
         .bouncing-element {
             position: fixed;
+            top: 0;
+            left: 0;
             pointer-events: none;
             z-index: 0;
             will-change: transform;
-            transform: translateZ(0);
             backface-visibility: hidden;
             perspective: 1000px;
             /* Multi-layered realistic glass effect */
@@ -291,7 +292,7 @@
             font-size: 2.5rem;
             font-weight: 700;
             letter-spacing: -0.02em;
-            background: linear-gradient(90deg, #1a237e 0%, #0d47a1 100%);
+            background: linear-gradient(90deg, #b45309 0%, #d97706 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -383,14 +384,16 @@
         }
 
         .user .message-content {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+            border: 1px solid rgba(251, 191, 36, 0.3);
             border-bottom-right-radius: 4px;
         }
 
         .assistant .message-content {
-            background: #1e293b;
-            color: #f8fafc;
+            background: linear-gradient(135deg, #fffbeb 0%, #fef9c3 100%);
+            color: #78350f;
+            border: 1px solid rgba(251, 191, 36, 0.2);
             border-bottom-left-radius: 4px;
         }
 
@@ -425,13 +428,13 @@
 
         .input-area textarea:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15);
+            border-color: #f59e0b;
+            box-shadow: 0 4px 16px rgba(245, 158, 11, 0.15);
         }
 
         .input-area button {
             padding: 16px 32px;
-            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
             border: none;
             border-radius: 14px;
             color: #fff;
@@ -439,12 +442,12 @@
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s ease;
-            box-shadow: 0 2px 8px rgba(30, 58, 138, 0.2);
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
         }
 
         .input-area button:hover {
             transform: translateY(-1px);
-            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.3);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
         }
 
         .input-area button:active {
@@ -513,7 +516,7 @@
         class BouncingBall {
             constructor(element, index) {
                 this.element = element;
-                this.width = parseFloat(getComputedStyle(element).width);
+                this.width = parseFloat(getComputedStyle(element).width) || 150;
                 this.x = Math.random() * (window.innerWidth - this.width);
                 this.y = Math.random() * (window.innerHeight - this.width);
                 // Ultra-slow base velocity for dreamy float
@@ -531,6 +534,10 @@
                 // Breathing scale effect
                 this.breatheOffset = index * 0.8;
                 this.breatheSpeed = 0.0006 + Math.random() * 0.0003;
+
+                // Apply initial position immediately
+                this.element.style.transform = `translate3d(${this.x}px, ${this.y}px, 0)`;
+
                 this.update();
             }
 
@@ -577,14 +584,18 @@
             }
         }
 
-        // Initialize bouncing balls with index for phase variation
-        const balls = [
-            new BouncingBall(document.getElementById('ball1'), 0),
-            new BouncingBall(document.getElementById('ball2'), 1),
-            new BouncingBall(document.getElementById('ball3'), 2),
-            new BouncingBall(document.getElementById('ball4'), 3),
-            new BouncingBall(document.getElementById('ball5'), 4)
-        ];
+        // Initialize bouncing balls after DOM is ready
+        let balls = [];
+
+        function initBalls() {
+            balls = [
+                new BouncingBall(document.getElementById('ball1'), 0),
+                new BouncingBall(document.getElementById('ball2'), 1),
+                new BouncingBall(document.getElementById('ball3'), 2),
+                new BouncingBall(document.getElementById('ball4'), 3),
+                new BouncingBall(document.getElementById('ball5'), 4)
+            ];
+        }
 
         // Chat functionality
         const ollamaUrl = 'https://ste-bicycle-idea-adventure.trycloudflare.com';
@@ -749,6 +760,7 @@
 
         // Auto-connect on page load
         window.addEventListener('DOMContentLoaded', () => {
+            initBalls(); // Initialize floating bubbles
             connect();
             userInput.focus();
         });
