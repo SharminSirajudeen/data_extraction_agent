@@ -579,7 +579,7 @@
 
             const contentDiv = document.createElement('div');
             contentDiv.className = 'message-content';
-            contentDiv.innerHTML = '<span class="streaming-cursor">▊</span>';
+            contentDiv.innerHTML = '<span class="streaming-cursor">|</span>';
 
             messageDiv.appendChild(label);
             messageDiv.appendChild(contentDiv);
@@ -622,7 +622,7 @@
                                     // Throttle DOM updates for better performance
                                     updateCounter++;
                                     if (updateCounter % 3 === 0) {
-                                        contentDiv.innerHTML = formatMessage(fullResponse) + '<span class="streaming-cursor">▊</span>';
+                                        contentDiv.innerHTML = formatMessage(fullResponse) + '<span class="streaming-cursor">|</span>';
                                         requestAnimationFrame(() => {
                                             chatContainer.scrollTop = chatContainer.scrollHeight;
                                         });
