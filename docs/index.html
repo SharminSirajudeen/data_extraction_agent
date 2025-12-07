@@ -24,10 +24,8 @@
             position: fixed;
             pointer-events: none;
             z-index: 0;
-            will-change: transform;
-            transform: translateZ(0);
+            will-change: transform, border-radius;
             backface-visibility: hidden;
-            perspective: 1000px;
             /* Multi-layered realistic glass effect */
             background:
                 /* Top highlight - specular reflection */
@@ -118,156 +116,54 @@
             animation: morph5 11s cubic-bezier(0.44, 0.01, 0.56, 0.99) infinite;
         }
 
-        /* Shape-shifting animations - Buttery smooth with extra keyframes */
+        /* Shape-shifting animations - border-radius only (JS handles position) */
         @keyframes morph1 {
-            0%, 100% {
-                border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-                transform: rotate(0deg) scale(1);
-            }
-            12.5% {
-                border-radius: 45% 55% 50% 50% / 55% 45% 50% 60%;
-                transform: rotate(2deg) scale(1.01);
-            }
-            25% {
-                border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
-                transform: rotate(0deg) scale(1);
-            }
-            37.5% {
-                border-radius: 40% 55% 50% 55% / 40% 50% 50% 55%;
-                transform: rotate(-2deg) scale(0.99);
-            }
-            50% {
-                border-radius: 50% 60% 30% 60% / 30% 40% 70% 50%;
-                transform: rotate(0deg) scale(1);
-            }
-            62.5% {
-                border-radius: 45% 55% 45% 55% / 55% 45% 60% 50%;
-                transform: rotate(1deg) scale(1.01);
-            }
-            75% {
-                border-radius: 40% 50% 60% 50% / 60% 50% 40% 60%;
-                transform: rotate(0deg) scale(1);
-            }
-            87.5% {
-                border-radius: 55% 45% 45% 60% / 55% 40% 55% 50%;
-                transform: rotate(-1deg) scale(0.99);
-            }
+            0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+            12.5% { border-radius: 45% 55% 50% 50% / 55% 45% 50% 60%; }
+            25% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+            37.5% { border-radius: 40% 55% 50% 55% / 40% 50% 50% 55%; }
+            50% { border-radius: 50% 60% 30% 60% / 30% 40% 70% 50%; }
+            62.5% { border-radius: 45% 55% 45% 55% / 55% 45% 60% 50%; }
+            75% { border-radius: 40% 50% 60% 50% / 60% 50% 40% 60%; }
+            87.5% { border-radius: 55% 45% 45% 60% / 55% 40% 55% 50%; }
         }
 
         @keyframes morph2 {
-            0%, 100% {
-                border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%;
-                transform: rotate(0deg) scale(1);
-            }
-            12.5% {
-                border-radius: 45% 55% 50% 50% / 50% 50% 55% 45%;
-                transform: rotate(-2deg) scale(1.02);
-            }
-            25% {
-                border-radius: 50% 50% 40% 60% / 40% 60% 50% 50%;
-                transform: rotate(0deg) scale(1);
-            }
-            37.5% {
-                border-radius: 55% 45% 45% 55% / 45% 55% 45% 55%;
-                transform: rotate(2deg) scale(0.98);
-            }
-            50% {
-                border-radius: 60% 40% 50% 50% / 50% 50% 40% 60%;
-                transform: rotate(0deg) scale(1);
-            }
-            62.5% {
-                border-radius: 50% 50% 55% 45% / 55% 45% 50% 50%;
-                transform: rotate(-1deg) scale(1.01);
-            }
-            75% {
-                border-radius: 45% 55% 55% 45% / 55% 45% 55% 45%;
-                transform: rotate(0deg) scale(1);
-            }
-            87.5% {
-                border-radius: 42% 58% 58% 42% / 58% 42% 58% 42%;
-                transform: rotate(1deg) scale(0.99);
-            }
+            0%, 100% { border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%; }
+            12.5% { border-radius: 45% 55% 50% 50% / 50% 50% 55% 45%; }
+            25% { border-radius: 50% 50% 40% 60% / 40% 60% 50% 50%; }
+            37.5% { border-radius: 55% 45% 45% 55% / 45% 55% 45% 55%; }
+            50% { border-radius: 60% 40% 50% 50% / 50% 50% 40% 60%; }
+            62.5% { border-radius: 50% 50% 55% 45% / 55% 45% 50% 50%; }
+            75% { border-radius: 45% 55% 55% 45% / 55% 45% 55% 45%; }
+            87.5% { border-radius: 42% 58% 58% 42% / 58% 42% 58% 42%; }
         }
 
         @keyframes morph3 {
-            0%, 100% {
-                border-radius: 50% 50% 40% 60% / 40% 60% 50% 50%;
-                transform: rotate(0deg) scale(1);
-            }
-            16.6% {
-                border-radius: 55% 45% 50% 50% / 45% 55% 50% 50%;
-                transform: rotate(1deg) scale(1.01);
-            }
-            33% {
-                border-radius: 60% 40% 60% 40% / 50% 50% 50% 50%;
-                transform: rotate(0deg) scale(1);
-            }
-            50% {
-                border-radius: 50% 50% 55% 45% / 55% 45% 55% 45%;
-                transform: rotate(-1deg) scale(0.99);
-            }
-            66% {
-                border-radius: 40% 60% 50% 50% / 60% 40% 60% 40%;
-                transform: rotate(0deg) scale(1);
-            }
-            83% {
-                border-radius: 45% 55% 45% 55% / 50% 50% 55% 45%;
-                transform: rotate(1deg) scale(1.01);
-            }
+            0%, 100% { border-radius: 50% 50% 40% 60% / 40% 60% 50% 50%; }
+            16.6% { border-radius: 55% 45% 50% 50% / 45% 55% 50% 50%; }
+            33% { border-radius: 60% 40% 60% 40% / 50% 50% 50% 50%; }
+            50% { border-radius: 50% 50% 55% 45% / 55% 45% 55% 45%; }
+            66% { border-radius: 40% 60% 50% 50% / 60% 40% 60% 40%; }
+            83% { border-radius: 45% 55% 45% 55% / 50% 50% 55% 45%; }
         }
 
         @keyframes morph4 {
-            0%, 100% {
-                border-radius: 55% 45% 50% 50% / 50% 50% 45% 55%;
-                transform: rotate(0deg) scale(1);
-            }
-            25% {
-                border-radius: 50% 50% 52% 48% / 52% 48% 48% 52%;
-                transform: rotate(-2deg) scale(1.02);
-            }
-            50% {
-                border-radius: 45% 55% 55% 45% / 55% 45% 50% 50%;
-                transform: rotate(0deg) scale(1);
-            }
-            75% {
-                border-radius: 52% 48% 50% 50% / 48% 52% 52% 48%;
-                transform: rotate(2deg) scale(0.98);
-            }
+            0%, 100% { border-radius: 55% 45% 50% 50% / 50% 50% 45% 55%; }
+            25% { border-radius: 50% 50% 52% 48% / 52% 48% 48% 52%; }
+            50% { border-radius: 45% 55% 55% 45% / 55% 45% 50% 50%; }
+            75% { border-radius: 52% 48% 50% 50% / 48% 52% 52% 48%; }
         }
 
         @keyframes morph5 {
-            0%, 100% {
-                border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-                transform: rotate(0deg) scale(1);
-            }
-            12.5% {
-                border-radius: 55% 45% 45% 55% / 55% 55% 45% 45%;
-                transform: rotate(1deg) scale(1.01);
-            }
-            25% {
-                border-radius: 60% 40% 40% 60% / 50% 50% 50% 50%;
-                transform: rotate(0deg) scale(1);
-            }
-            37.5% {
-                border-radius: 50% 50% 50% 50% / 45% 45% 55% 55%;
-                transform: rotate(-1deg) scale(0.99);
-            }
-            50% {
-                border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%;
-                transform: rotate(0deg) scale(1);
-            }
-            62.5% {
-                border-radius: 45% 55% 55% 45% / 50% 50% 50% 50%;
-                transform: rotate(1deg) scale(1.01);
-            }
-            75% {
-                border-radius: 55% 45% 45% 55% / 55% 55% 45% 45%;
-                transform: rotate(0deg) scale(1);
-            }
-            87.5% {
-                border-radius: 52% 48% 48% 52% / 58% 58% 42% 42%;
-                transform: rotate(-1deg) scale(0.99);
-            }
+            0%, 100% { border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; }
+            12.5% { border-radius: 55% 45% 45% 55% / 55% 55% 45% 45%; }
+            25% { border-radius: 60% 40% 40% 60% / 50% 50% 50% 50%; }
+            37.5% { border-radius: 50% 50% 50% 50% / 45% 45% 55% 55%; }
+            50% { border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%; }
+            62.5% { border-radius: 45% 55% 55% 45% / 50% 50% 50% 50%; }
+            75% { border-radius: 55% 45% 45% 55% / 55% 55% 45% 45%; }
+            87.5% { border-radius: 52% 48% 48% 52% / 58% 58% 42% 42%; }
         }
 
         .container {
@@ -580,13 +476,13 @@
         }
 
         // Initialize bouncing balls with index for phase variation
-        const balls = [
-            new BouncingBall(document.getElementById('ball1'), 0),
-            new BouncingBall(document.getElementById('ball2'), 1),
-            new BouncingBall(document.getElementById('ball3'), 2),
-            new BouncingBall(document.getElementById('ball4'), 3),
-            new BouncingBall(document.getElementById('ball5'), 4)
-        ];
+        const balls = [];
+        ['ball1', 'ball2', 'ball3', 'ball4', 'ball5'].forEach((id, index) => {
+            const el = document.getElementById(id);
+            if (el) {
+                balls.push(new BouncingBall(el, index));
+            }
+        });
 
         // Chat functionality
         const ollamaUrl = 'https://ste-bicycle-idea-adventure.trycloudflare.com';
