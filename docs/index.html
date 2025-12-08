@@ -414,25 +414,33 @@
 
     <script>
         // Glass bubbles animation - Ultra-smooth, floating with depth
+        const isMobile = window.innerWidth < 768;
+        const mobileScale = isMobile ? 0.5 : 1;
+        const bubbleCount = isMobile ? 3 : 5;
+
         class BouncingBall {
             constructor(element, index) {
                 this.element = element;
-                this.width = parseFloat(getComputedStyle(element).width);
-                this.x = Math.random() * (window.innerWidth - this.width);
-                this.y = Math.random() * (window.innerHeight - this.width);
-                // Ultra-slow base velocity for dreamy float
+                const baseWidth = parseFloat(getComputedStyle(element).width);
+                this.width = baseWidth * mobileScale;
+                if (isMobile) {
+                    this.element.style.width = this.width + 'px';
+                    this.element.style.height = this.width + 'px';
+                }
+                // Spawn within center 80% of viewport
+                const padX = window.innerWidth * 0.1;
+                const padY = window.innerHeight * 0.1;
+                this.x = padX + Math.random() * (window.innerWidth * 0.8 - this.width);
+                this.y = padY + Math.random() * (window.innerHeight * 0.8 - this.width);
                 this.vx = (Math.random() - 0.5) * 0.6;
                 this.vy = (Math.random() - 0.5) * 0.6;
-                // Slower speed multiplier
                 this.speedMultiplier = 0.15 + Math.random() * 0.35;
                 this.changeDirectionTimer = 0;
                 this.maxWidth = window.innerWidth - this.width;
                 this.maxHeight = window.innerHeight - this.width;
-                // Subtle floating effect parameters
-                this.floatOffset = index * 1.2; // Phase offset for variety
+                this.floatOffset = index * 1.2;
                 this.floatSpeed = 0.0008 + Math.random() * 0.0004;
                 this.time = 0;
-                // Breathing scale effect
                 this.breatheOffset = index * 0.8;
                 this.breatheSpeed = 0.0006 + Math.random() * 0.0003;
                 this.update();
@@ -440,27 +448,22 @@
 
             update() {
                 this.time++;
-
-                // Slowly change direction for organic movement
                 this.changeDirectionTimer++;
                 if (this.changeDirectionTimer > 400 + Math.random() * 500) {
                     this.speedMultiplier = 0.12 + Math.random() * 0.45;
                     this.vx += (Math.random() - 0.5) * 0.25;
                     this.vy += (Math.random() - 0.5) * 0.25;
-                    // Gentle velocity bounds
                     this.vx = Math.max(-0.7, Math.min(0.7, this.vx));
                     this.vy = Math.max(-0.7, Math.min(0.7, this.vy));
                     this.changeDirectionTimer = 0;
                 }
 
-                // Position with gentle float
                 const floatY = Math.sin((this.time + this.floatOffset) * this.floatSpeed) * 15;
                 const floatX = Math.cos((this.time + this.floatOffset) * this.floatSpeed * 0.7) * 10;
 
                 this.x += this.vx * this.speedMultiplier;
                 this.y += this.vy * this.speedMultiplier;
 
-                // Soft elastic bounce
                 if (this.x <= 0 || this.x >= this.maxWidth) {
                     this.vx *= -0.85;
                     this.x = Math.max(0, Math.min(this.x, this.maxWidth));
@@ -470,10 +473,7 @@
                     this.y = Math.max(0, Math.min(this.y, this.maxHeight));
                 }
 
-                // Subtle breathing scale (0.98 to 1.02)
                 const breatheScale = 1 + Math.sin((this.time + this.breatheOffset) * this.breatheSpeed) * 0.02;
-
-                // GPU-accelerated transform with all effects
                 this.element.style.transform =
                     `translate3d(${this.x + floatX}px, ${this.y + floatY}px, 0) scale(${breatheScale})`;
 
@@ -481,14 +481,22 @@
             }
         }
 
-        // Initialize bouncing balls with index for phase variation
+        // Initialize bubbles - fewer on mobile
         const balls = [];
-        ['ball1', 'ball2', 'ball3', 'ball4', 'ball5'].forEach((id, index) => {
-            const el = document.getElementById(id);
+        const ballIds = ['ball1', 'ball2', 'ball3', 'ball4', 'ball5'];
+        for (let i = 0; i < bubbleCount; i++) {
+            const el = document.getElementById(ballIds[i]);
             if (el) {
-                balls.push(new BouncingBall(el, index));
+                balls.push(new BouncingBall(el, i));
+            } else {
+                break;
             }
-        });
+        }
+        // Hide unused bubbles on mobile
+        for (let i = bubbleCount; i < 5; i++) {
+            const el = document.getElementById(ballIds[i]);
+            if (el) el.style.display = 'none';
+        }
 
         // Chat functionality
         // Get URL from ?url= parameter or use default (strip trailing slash)
