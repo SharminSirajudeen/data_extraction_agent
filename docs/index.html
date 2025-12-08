@@ -491,9 +491,9 @@
         });
 
         // Chat functionality
-        // Get URL from ?url= parameter or use default
+        // Get URL from ?url= parameter or use default (strip trailing slash)
         const urlParams = new URLSearchParams(window.location.search);
-        const ollamaUrl = urlParams.get('url') || 'https://ste-bicycle-idea-adventure.trycloudflare.com';
+        const ollamaUrl = (urlParams.get('url') || 'https://ste-bicycle-idea-adventure.trycloudflare.com').replace(/\/$/, '');
         let conversationHistory = [];
         let currentModel = 'deepseek-r1:8b';
 
